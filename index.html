@@ -2,21 +2,22 @@
 <html>
     <head>
         <title>Easy Calculator</title>
-        <link href="./resources/css/reset.css" type="text/css" rel="stylesheet">
+        <!-- <link href="./resources/css/reset.css" type="text/css" rel="stylesheet"> -->
         <link href="./resources/css/style.css" type="text/css" rel="stylesheet">
         <script src="./resources/js/calculator.js"></script>
     </head>
     <body>
         <header>
-            <h1>Hier kommt ein kleiner Taschenrechner hin.</h1>
+            <h1>Easy Calculator</h1>
+            <span>inspired by xyz</span>
         </header>
         <main>
             <div class="calculator" role="presentation">
                 <span class="formerInput">vorherige eingaben</span>
                 <span class="currentResult">Ergebnis</span>
-                <button data-value="ac" class="grey">AC</button>
-                <button data-value="c" class="grey">C</button>
-                <button data-value="ch" class="grey">+/-</button>
+                <button data-value="clearAll" class="other">AC</button>
+                <button data-value="clear" class="other">C</button>
+                <button data-value="change" class="other">+/-</button>
                 <button data-value="/" class="function">/</button>
                 <button data-value="7" class="number">7</button>
                 <button data-value="8" class="number">8</button>
@@ -30,9 +31,9 @@
                 <button data-value="2" class="number">2</button>
                 <button data-value="3" class="number">3</button>
                 <button data-value="+" class="function">+</button>
-                <button data-value="0" class="number">0</button>
+                <button data-value="0" class="number zero">0</button>
                 <button data-value="," class="number">,</button>
-                <button data-value="=" class="calculateBtn">=</button>
+                <button data-value="=" class="function">=</button>
             </div>
         </main>
         <footer>
