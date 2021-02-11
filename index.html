@@ -4,36 +4,36 @@
         <title>Easy Calculator</title>
         <!-- <link href="./resources/css/reset.css" type="text/css" rel="stylesheet"> -->
         <link href="./resources/css/style.css" type="text/css" rel="stylesheet">
-        <script src="./resources/js/calculator.js"></script>
+        <script src="./resources/js/calculator.js" defer></script>
     </head>
     <body>
         <header>
             <h1>Easy Calculator</h1>
-            <span>inspired by BOBBYcb</span>
+            <span>inspired by me</span>
         </header>
         <main>
             <div class="calculator" role="presentation">
-                <span class="formerInput">vorherige eingaben</span>
-                <span class="currentResult">Ergebnis</span>
-                <button data-value="clearAll" class="other">AC</button>
-                <button data-value="clear" class="other">C</button>
-                <button data-value="change" class="other">±</button>
-                <button data-value="/" class="function">÷</button>
-                <button data-value="7" class="number">7</button>
-                <button data-value="8" class="number">8</button>
-                <button data-value="9" class="number">9</button>
-                <button data-value="x" class="function">x</button>
-                <button data-value="4" class="number">4</button>
-                <button data-value="5" class="number">5</button>
-                <button data-value="6" class="number">6</button>
-                <button data-value="-" class="function">-</button>
-                <button data-value="1" class="number">1</button>
-                <button data-value="2" class="number">2</button>
-                <button data-value="3" class="number">3</button>
-                <button data-value="+" class="function">+</button>
-                <button data-value="0" class="number zero">0</button>
-                <button data-value="," class="number">,</button>
-                <button data-value="=" class="function">=</button>
+                <span class="formerInput" id="formerInput"></span>
+                <span class="currentResult" id="currentResult">0</span>
+                <button data-value="clearAll" class="other" id="clearAll">AC</button>
+                <button data-value="del" class="other" id="delete">DEL</button>
+                <button data-value="change" class="other" id="change">&#177;</button>
+                <button data-value="/" class="function" id="divide">&#247;</button>
+                <button data-value="7" class="number" id="7">7</button>
+                <button data-value="8" class="number" id="8">8</button>
+                <button data-value="9" class="number" id="9">9</button>
+                <button data-value="x" class="function" id="multiply">&#215;</button>
+                <button data-value="4" class="number" id="4">4</button>
+                <button data-value="5" class="number" id="5">5</button>
+                <button data-value="6" class="number" id="6">6</button>
+                <button data-value="-" class="function" id="sub">&#8722;</button>
+                <button data-value="1" class="number" id="1">1</button>
+                <button data-value="2" class="number" id="2">2</button>
+                <button data-value="3" class="number" id="3">3</button>
+                <button data-value="+" class="function" id="add">&#43;</button>
+                <button data-value="0" class="number zero" id="0">0</button>
+                <button data-value="," class="number" id="comma">,</button>
+                <button data-value="=" class="function" id="calculate">=</button>
             </div>
         </main>
     </body>
