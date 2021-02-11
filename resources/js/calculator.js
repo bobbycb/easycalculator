@@ -4,9 +4,47 @@ const formerInput = document.getElementById("formerInput");
 
 buttons.forEach( button => {
     button.addEventListener("click", input => {
-        console.log(input.target.dataset.value);
+        calculator(input.target.dataset.value);
     });
 })
+
+const calculator = (value) => {
+    console.log(value);
+
+    const displayStr = String(currentResult.innerHTML);
+    console.log(displayStr);
+
+    if(!isNaN(value)) {
+        if((displayStr.length === 1) && (displayStr === "0") ) {
+            console.log("AND");
+            currentResult.innerHTML = value;
+        } else {
+            console.log("ADD");
+            currentResult.innerHTML += value;
+        }
+
+    } else if (value === ",") {
+
+        currentResult.innerHTML += value;
+
+    } else {
+
+        switch (value) {
+            case (Number(value)):
+                currentResult.innerHTML =+ value;
+                break;
+            case 'clearAll':
+                clearAll(value);
+                break;
+            case 'del':
+                deleteChar();
+                break;
+            default:
+                return;
+      }
+    }
+    
+}
 
 const add = (a, b) => { 
     return a + b;
@@ -33,19 +71,30 @@ const clearAll = () => {
     currentResult.innerHTML = "0";
 }
 
-const deleteChar = (value) => {
-    if(value) {
-       return String(value).substring(0, value.length-1); 
-    }return;
+const deleteChar = () => {
+    let displayStr = currentResult.innerHTML;
+
+    if(displayStr !== "0") {
+        displayStr = displayStr.substring(0, displayStr.length-1);
+        if(displayStr.length === 0) {
+            currentResult.innerHTML = "0";
+        } else {
+        currentResult.innerHTML = displayStr;
+        }
+    } else {
+        console.log("else")
+        currentResult.innerHTML = "0";
+    }
 }
 
-const change = (value) => {
-    const valueStr = String(value);
-    const lengthStr = valueStr.length;
+const alterSign = () => {
+    const displayStr = currentResult.innerHTML;
+    const displayLength = displayStr.length;
 
-    if(valueStr[lengthStr - 1] === ",") {
-        return String(Number(deleteChar(valueStr)) * (-1)).concat(",");
+    if(displayStr[displayLength - 1] === ",") {
+        // deleteChar erfordert kein Argument mehr 
+        return String(Number(deleteChar(displayStr)) * (-1)).concat(",");
     }
     
-    return Number(valueStr) * (-1);
+    return Number(displayStr) * (-1);
 }
