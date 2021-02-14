@@ -66,37 +66,37 @@ const isPrevInputEmpty = () => {
 }
 
 const applyOperation = (operation) => {
-    const currentFloat = parseInput(getInput(mainInput));
+    const currentFloat = getInput(mainInput);
     
     if( isPrevInputEmpty() ) {
         tempFirstFloat = currentFloat;
         lastOperation = operation;
-        addInput(prevInput, parseInput(tempFirstFloat));
+        addInput(prevInput, tempFirstFloat);
         addInput(prevInput, operation);
         setInput(mainInput, "0");
     } else if(isResult) {
         lastOperation = operation;
-        tempFirstFloat = parseInput(currentFloat);
-        setInput(prevInput, parseInput(currentFloat));
+        tempFirstFloat = currentFloat;
+        setInput(prevInput, currentFloat);
         addInput(prevInput, operation);
         setInput(mainInput, "0");
         isResult = false;
     } else {
         lastOperation = operation;
-        setInput(prevInput, parseInput(tempFirstFloat));
+        setInput(prevInput, tempFirstFloat);
         addInput(prevInput, operation);
     }
 }
 
 const calculate = () => {
-    const currentFloat = parseInput(getInput(mainInput));
+    const currentFloat = getInput(mainInput);
     let result; 
 
     if ( !isPrevInputEmpty() ) {
         tempSecondFloat = currentFloat;
         addInput(prevInput, currentFloat);
         addInput(prevInput, "=");
-        result = parseInput(doMathOperation(tempFirstFloat, tempSecondFloat, lastOperation));
+        result = doMathOperation(tempFirstFloat, tempSecondFloat, lastOperation);
         clearVariables();
         isResult = true;
         setInput(mainInput, result);
@@ -159,22 +159,19 @@ const deleteChar = () => {
 
  /* parseFloat doesn't works with comma (,), so we need to replace it with a point (.) and vice versa */
 const alterSign = () => {
-    const displayStr = getInput(mainInput);
-    const alteredFloat = parseInput(displayStr) * -1;
-    const alteredStr = parseInput(alteredFloat);
-    setInput(mainInput, alteredStr);
+    setInput(mainInput, getInput(mainInput) * -1);
 }
 
 const getInput = (field) => {
-    return field.innerHTML;
+    return parseInput(field.innerHTML);
 }
 
 const setInput = (field, value) => {
-    field.innerHTML = value;
+    field.innerHTML = parseInput(value);
 }
 
 const addInput = (field, value) => {
-    field.innerHTML += " " + value;
+    field.innerHTML += " " + parseInput(value);
 } 
 
 // returns a string-number with comma or a float-number with point for math-operations
