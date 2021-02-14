@@ -54,7 +54,7 @@ header span {
     align-content: center;
 }
 
-.formerInput {
+.prevInput {
     grid-area: 1 / 1 / span 1 / span 4;
     padding: 0.25rem 0.5rem;
     background-color: rgba(255, 255, 255, 0.2);
@@ -67,7 +67,7 @@ header span {
     line-height: 20px;   
 }
 
-.currentResult {
+.mainInput {
     grid-area: 2 / 1 / span 1 / span 4;
     padding: 0.25rem 0.25rem;
     font-size: 2rem;
@@ -79,13 +79,13 @@ header span {
     border-radius: 5px;
 }
 
-.formerInput::selection ,
-.currentResult::selection {
+.prevInput::selection ,
+.mainInput::selection {
     text-shadow: none;
 }
 
-.formerInput::-moz-selection ,
-.currentResult::-moz-selection {
+.prevInput::-moz-selection ,
+.mainInput::-moz-selection {
     text-shadow: none;
 }
 

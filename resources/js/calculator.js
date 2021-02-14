@@ -1,6 +1,9 @@
 const buttons = document.querySelectorAll("button");
-const currentResult = document.getElementById("currentResult");
-const formerInput = document.getElementById("formerInput");
+const mainInput = document.getElementById("mainInput");
+const prevInput = document.getElementById("prevInput");
+
+let tempFirstFloat, tempSecondFloat, lastOperation;
+let isResult = false;
 
 buttons.forEach( button => {
     button.addEventListener("click", input => {
@@ -8,28 +11,37 @@ buttons.forEach( button => {
     });
 })
 
-const calculator = (value) => {
-    // needed for check the length
-    const displayStr = String(currentResult.innerHTML);
+const calculator = (inputValue) => {
+    // needed to check the length
+    const displayStr = String(getInput(mainInput));
 
     // check for number-buttons
-    if(!isNaN(value)) {
-        if((displayStr.length === 1) && (displayStr === "0") ) {
-            currentResult.innerHTML = value;
+    if(!isNaN(inputValue)) {
+        if(isResult) {
+            clearVariables();
+            setInput(mainInput,inputValue);
+            setInput(prevInput, "");
+        } else if((displayStr.length === 1) && (displayStr === "0") ) {
+            setInput(mainInput,inputValue);
         } else {
-            currentResult.innerHTML += value;
+            mainInput.innerHTML += inputValue;
         }
     // check for comma-button
-    } else if (value === ",") {
-        if (!currentResult.innerHTML.includes(",")) {
-            currentResult.innerHTML += value;
-        }  
+    } else if (inputValue === ",") {
+        if (!displayStr.includes(",")) {
+            mainInput.innerHTML += inputValue;
+        } return
     // check for functions-buttons
     } else {
-
-        switch (value) {
+        switch (inputValue) {
+            case '/':
+            case 'x':
+            case '-':
+            case '+':
+                applyOperation(inputValue);
+                break;
             case 'clearAll':
-                clearAll(value);
+                clearAll();
                 break;
             case 'del':
                 deleteChar();
@@ -37,6 +49,9 @@ const calculator = (value) => {
             case 'change':
                 alterSign();
                 break;
+            case '=':
+                calculate();
+                break;   
             default:
                 return;
         }
@@ -44,57 +59,136 @@ const calculator = (value) => {
     
 }
 
-const add = (a, b) => { 
-    return a + b;
-};
-
-const substract = (a, b) => {
-    return a - b;
+const isPrevInputEmpty = () => {
+    if(!getInput(prevInput)) {
+        return true;
+    } return false;
 }
 
-const multiply = (a, b) => {
-    return a * b;
+const applyOperation = (operation) => {
+    const currentFloat = parseInput(getInput(mainInput));
+    
+    if( isPrevInputEmpty() ) {
+        tempFirstFloat = currentFloat;
+        lastOperation = operation;
+        addInput(prevInput, parseInput(tempFirstFloat));
+        addInput(prevInput, operation);
+        setInput(mainInput, "0");
+    } else if(isResult) {
+        lastOperation = operation;
+        tempFirstFloat = parseInput(currentFloat);
+        setInput(prevInput, parseInput(currentFloat));
+        addInput(prevInput, operation);
+        setInput(mainInput, "0");
+        isResult = false;
+    } else {
+        lastOperation = operation;
+        setInput(prevInput, parseInput(tempFirstFloat));
+        addInput(prevInput, operation);
+    }
 }
 
-const divide = (a, b) => {
-    return a / b;
-};
+const calculate = () => {
+    const currentFloat = parseInput(getInput(mainInput));
+    let result; 
 
-const addComma = (value) => {
-    return value + ",";
+    if ( !isPrevInputEmpty() ) {
+        tempSecondFloat = currentFloat;
+        addInput(prevInput, currentFloat);
+        addInput(prevInput, "=");
+        result = parseInput(doMathOperation(tempFirstFloat, tempSecondFloat, lastOperation));
+        clearVariables();
+        isResult = true;
+        setInput(mainInput, result);
+    } return;
 }
 
-const clearCurrentResult = () => {
-    currentResult.innerHTML = 0;
+const doMathOperation = (value1, value2, operation) => {
+    const float1 = parseFloat(value1);
+    const float2 = parseFloat(value2);
+
+    switch (operation) {
+        case '+': 
+            return (float1 + float2);
+        case '-':
+            return (float1 - float2);
+        case 'x':
+            return (float1 * float2);
+        case '/':
+            return (float1 / float2);
+        default:
+            alert("Fehler in doMathOperation");
+            break;
+    }
+}
+
+const clearMainInput = () => {
+    setInput(mainInput, 0);
+}
+
+const clearVariables = () => {
+    tempFirstFloat = undefined;
+    tempSecondFloat = undefined;
+    lastOperation = undefined;
+    isResult = false;
 }
 
 const clearAll = () => {
-    formerInput.innerHTML = "";
-    currentResult.innerHTML = "0";
+    setInput(prevInput, "");
+    setInput(mainInput, "0");
+    tempFirstFloat = undefined;
+    tempSecondFloat = undefined;
+    lastOperation = undefined;
+    isResult = false;
 }
 
 const deleteChar = () => {
-    let displayStr = currentResult.innerHTML;
+    let displayStr = getInput(mainInput);
 
     if(displayStr !== "0") {
         const newStr = displayStr.substring(0, displayStr.length-1);
         if(newStr.length === 0) {
-            currentResult.innerHTML = "0";
+            setInput(mainInput, "0");
         } else {
-        currentResult.innerHTML = newStr;
+        setInput(mainInput, newStr);
         }
     } else {
-        currentResult.innerHTML = "0";
+        setInput(mainInput, "0");
     }
 }
 
  /* parseFloat doesn't works with comma (,), so we need to replace it with a point (.) and vice versa */
 const alterSign = () => {
-    const displayStr = currentResult.innerHTML
+    const displayStr = getInput(mainInput);
+    const alteredFloat = parseInput(displayStr) * -1;
+    const alteredStr = parseInput(alteredFloat);
+    setInput(mainInput, alteredStr);
+}
 
-    const alteredFloat = parseFloat(displayStr.replace(',', '.')) * -1;
+const getInput = (field) => {
+    return field.innerHTML;
+}
 
-    const alteredStr = String(alteredFloat).replace('.', ',');
+const setInput = (field, value) => {
+    field.innerHTML = value;
+}
 
-    currentResult.innerHTML = alteredStr;
+const addInput = (field, value) => {
+    field.innerHTML += " " + value;
+} 
+
+// returns a string-number with comma or a float-number with point for math-operations
+const parseInput = (value) => {
+    const valueStr = String(value);
+    let newValue = "";
+
+    if(valueStr.includes(",")) {
+        newValue = parseFloat(valueStr.replace(',', '.'));
+        return newValue;
+    } else if(valueStr.includes(".")) {
+        newValue = String(valueStr).replace('.', ',');
+        return newValue;
+    } else {
+        return value;
+    }
 }
