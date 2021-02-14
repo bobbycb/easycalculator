@@ -11,6 +11,19 @@ buttons.forEach( button => {
     });
 })
 
+// Keydown doesn't recognize ESC or Back. Numbers are working
+document.addEventListener('keypress', (e) => {
+    const code = Number(e.which);
+    console.log(code);
+    // numbers
+    if(code >= 48 && code <= 57 || code >= 96 && code <= 105) {
+        calculator(String.fromCharCode(code));
+    } else {
+        console.log(String.fromCharCode(code));
+    }
+})
+
+
 const calculator = (inputValue) => {
     // needed to check the length
     const displayStr = String(getInput(mainInput));
